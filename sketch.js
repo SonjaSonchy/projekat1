@@ -21,6 +21,12 @@ function setup() {
   ellipse(width/2-50+70, height/2-50+30, 30, 30);
 
   line(width/2-30, height/2+30, width/2+30, height/2+30);
+
+  // triangle(100, 250, 250, 170, 330, 300);
+
+  fill(255,100,30);
+
+  triangle(0, 0, 0, 60, 60, 0);
  
  }
 
