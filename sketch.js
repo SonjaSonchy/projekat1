@@ -1,25 +1,34 @@
-var positionX = 50;
-var positionY = 50;
+var positionX = 0;
+
+var positionY = 0;
+
+var canvas;
 
 var speedX=1;
+
 var speedY=0;
 
-var speedFactor=4;
+var targetPositionX;
 
+var targetPositionY;var punteggio=0;var speedFactor=2;
 
 function setup() {
 
- createCanvas(800, 600);
+ //createCanvas(300,400);
 
-}
+ canvas = createCanvas(windowWidth,windowHeight);
 
+ updateTarget();
 
-
-function draw() {
+}function draw() {
 
  background(200);
 
  updatePosition();
+
+ checkTarget();
+
+ drawtarget();
 
  nacrtajTelo(positionX, positionY);
 
@@ -36,10 +45,8 @@ function draw() {
    nacrtajUsta(false);
 
  }
-
+ nacrtajScore();
 }
-
-
 
 function updatePosition(){
 
@@ -47,9 +54,37 @@ function updatePosition(){
 
  positionY = positionY+speedY*speedFactor;
 
+}function updateTarget(){
+
+ targetPositionX=random(width);
+
+ targetPositionY=random(height);
+
 }
 
+function checkTarget(){
 
+ var distanceX=targetPositionX-positionX;
+
+ var distanceY=targetPositionY-positionY;  if ((distanceX<50&&distanceX>-50)&&(distanceY<50&&distanceY>-50)){
+
+   updateTarget();
+
+   punteggio++;
+
+   speedFactor+=punteggio/3;
+
+ }
+
+}
+
+function drawtarget(){
+
+ fill(255,0,0);
+
+ ellipse(targetPositionX,targetPositionY, 20,20);
+
+}
 
 function nacrtajTelo(x, y) {
 
@@ -59,11 +94,7 @@ function nacrtajTelo(x, y) {
 
  rect(x - 50, y - 50, 100, 100);
 
-}
-
-
-
-function nacrtajKapu() {
+}function nacrtajKapu() {
 
  push();
 
@@ -71,17 +102,13 @@ function nacrtajKapu() {
 
  translate(positionX - 60, positionY - 60);
 
- fill(255, 100, 30);
+ fill(255,100,30);
 
  triangle(0, 0, 0, 60, 60, 0);
 
  pop();
 
-}
-
-
-
-function nacrtajOci() {
+}function nacrtajOci() {
 
  fill(255);
 
@@ -90,8 +117,13 @@ function nacrtajOci() {
  ellipse(positionX - 50 + 70, positionY - 50 + 30, 30, 30)
 
 }
+function nacrtajScore(){
 
-
+  textSize(32);
+ 
+  text("SCORE: "+punteggio, 40, 40);
+ 
+ }
 
 function nacrtajUsta(zatvorena) {
 
@@ -109,11 +141,7 @@ function nacrtajUsta(zatvorena) {
 
    rect(positionX - 30, positionY + 13, 60, 20);
 
- }
-
-
-
- fill(255);
+ }  fill(255);
 
  noStroke();
 
@@ -121,11 +149,7 @@ function nacrtajUsta(zatvorena) {
 
  rect(positionX + 20, positionY + 18, 10, 10);
 
-}
-
-
-
-function keyPressed() {
+}function keyPressed() {
 
  if (keyCode === LEFT_ARROW) {
 
@@ -153,6 +177,16 @@ function keyPressed() {
 
  }
 
+ else if(keyCode === SPACE){
 
+   speedFactor=0;
 
 }
+
+}
+
+window.onresize = function() {
+
+ canvas.size(windowWidth, windowHeight);
+
+};
